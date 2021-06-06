@@ -27,6 +27,7 @@ class MemoryGameLayout extends React.Component<
   private gameService: GameService;
   public timerInterval: any;
   public errorMessage: string = "";
+  public disabledClickOnCard: boolean = false;
 
   constructor(props: any) {
     super(props);
@@ -89,8 +90,10 @@ class MemoryGameLayout extends React.Component<
         this.setState({ selectedCardKeyIndices: [] });
       } else {
         // this.moveErrors += 1;
+        this.disabledClickOnCard = true;
         setTimeout(() => {
           this.setState({ selectedCardKeyIndices: [] });
+          this.disabledClickOnCard = false;
         }, 3000);
       }
     }
@@ -169,7 +172,8 @@ class MemoryGameLayout extends React.Component<
                     key={cardIndex}
                     disabled={
                       this.state.selectedCardKeyIndices.includes(cardIndex) ||
-                      this.solvedCards.includes(cardIndex)
+                      this.solvedCards.includes(cardIndex) ||
+                      this.disabledClickOnCard
                     }
                     onClick={(cardClickEvent) =>
                       this.handleCardClick(card.key, cardIndex)
